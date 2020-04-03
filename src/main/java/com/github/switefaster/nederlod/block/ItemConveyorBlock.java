@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -19,6 +21,8 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 
 public class ItemConveyorBlock extends ContainerBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    
     public ItemConveyorBlock() {
         super(Properties.create(Material.IRON).notSolid());
     }
