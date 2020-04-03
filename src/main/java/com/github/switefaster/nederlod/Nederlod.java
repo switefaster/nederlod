@@ -1,10 +1,11 @@
 package com.github.switefaster.nederlod;
 
-import com.github.switefaster.nederlod.client.renderer.GirlfriendRenderer;
+import com.github.switefaster.nederlod.capability.NederlodCapabilities;
 import com.github.switefaster.nederlod.entity.NederlodEntities;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import com.github.switefaster.nederlod.tileentity.NederlodTileEntities;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Nederlod.MOD_ID)
@@ -13,9 +14,15 @@ public class Nederlod {
 
     public Nederlod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupCommon);
+    }
+
+    private void setupCommon(final FMLCommonSetupEvent event) {
+        NederlodCapabilities.registerCapabilities();
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(NederlodEntities.girlfriend, GirlfriendRenderer::new);
+        NederlodTileEntities.registerRenderers();
+        NederlodEntities.registerRenderers();
     }
 }
