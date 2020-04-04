@@ -7,6 +7,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.extensions.IForgeItemStack;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,7 +42,7 @@ public class CapabilitySyncProgressive {
             ((ListNBT) nbt).forEach(comp ->
                     instance.put(
                             ((CompoundNBT) comp).getInt("progress"),
-                            ((CompoundNBT) comp).getList("items", 10)
+                            ((CompoundNBT) comp).getList("items", Constants.NBT.TAG_COMPOUND)
                                     .stream()
                                     .map(CompoundNBT.class::cast)
                                     .map(ItemStack::read)

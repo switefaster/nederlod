@@ -8,6 +8,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
@@ -32,7 +33,7 @@ public class ItemConveyorTileEntity extends NBTSyncTileEntity implements ITickab
     @Override
     public void read(CompoundNBT compound) {
         conveyedItems.clear();
-        NederlodCapabilities.SYNC_PROGRESSIVE.getStorage().readNBT(NederlodCapabilities.SYNC_PROGRESSIVE, conveyedItems, null, compound.getList("conveyed", 10));
+        NederlodCapabilities.SYNC_PROGRESSIVE.getStorage().readNBT(NederlodCapabilities.SYNC_PROGRESSIVE, conveyedItems, null, compound.getList("conveyed", Constants.NBT.TAG_COMPOUND));
         super.read(compound);
     }
 
