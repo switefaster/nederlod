@@ -10,4 +10,8 @@ public class Util {
         return null;
     }
 
+    public static float zeroOrInv(float number) {
+        return number == 0 ? 0 : 1 / number;
+    }
+
 }

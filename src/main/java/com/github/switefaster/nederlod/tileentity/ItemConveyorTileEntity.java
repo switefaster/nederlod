@@ -1,21 +1,23 @@
 package com.github.switefaster.nederlod.tileentity;
 
-import com.github.switefaster.nederlod.capability.CapabilitySyncProgressive;
-import com.github.switefaster.nederlod.capability.NederlodCapabilities;
-import com.github.switefaster.nederlod.capability.SyncProgressive;
+import com.github.switefaster.nederlod.tileentity.conveyor.ConveyorBelt;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemConveyorTileEntity extends NBTSyncTileEntity implements ITickableTileEntity {
-    private SyncProgressive conveyedItems = new CapabilitySyncProgressive.Implementation();
+    private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
+    private LazyOptional<BlockPos> commander = LazyOptional.empty();
+    private ConveyorBelt belt;
+    private boolean dirty;
 
     public ItemConveyorTileEntity() {
         super(NederlodTileEntities.item_conveyor);
@@ -24,39 +26,42 @@ public class ItemConveyorTileEntity extends NBTSyncTileEntity implements ITickab
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (NederlodCapabilities.SYNC_PROGRESSIVE.equals(cap)) {
-            return LazyOptional.of(() -> conveyedItems).cast();
+        if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.equals(cap) && side != Direction.DOWN) {
+            return itemHandler.cast();
         }
         return super.getCapability(cap, side);
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        conveyedItems.clear();
-        NederlodCapabilities.SYNC_PROGRESSIVE.getStorage().readNBT(NederlodCapabilities.SYNC_PROGRESSIVE, conveyedItems, null, compound.getList("conveyed", Constants.NBT.TAG_COMPOUND));
+    public void read(@Nonnull CompoundNBT compound) {
         super.read(compound);
     }
 
     @Nonnull
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        INBT list = NederlodCapabilities.SYNC_PROGRESSIVE.getStorage().writeNBT(NederlodCapabilities.SYNC_PROGRESSIVE, conveyedItems, null);
-        if (list != null) {
-            compound.put("conveyed", list);
-        }
+    public CompoundNBT write(@Nonnull CompoundNBT compound) {
         return super.write(compound);
     }
 
     @Override
     public void tick() {
-        if (world != null && !world.isRemote) {
-            conveyedItems.progressAll(1);
-            notifyClient();
+        if (dirty) {
+            belt.tick();
+            this.notifyClient();
+            dirty = false;
         }
+    }
+
+    public boolean isCommander() {
+        return this.pos.equals(commander.orElse(BlockPos.ZERO.down(1)));
     }
 
     @Override
     public boolean hasFastRenderer() {
-        return true;
+        return isCommander();
+    }
+
+    public void needUpdate() {
+        this.dirty = isCommander();
     }
 }

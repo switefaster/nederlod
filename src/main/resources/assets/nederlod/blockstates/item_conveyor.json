@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "shape=north_south": {
+      "model": "nederlod:block/item_conveyor_straight"
+    },
+    "shape=east_west": {
+      "model": "nederlod:block/item_conveyor_straight",
+      "y": 90
+    },
+    "shape=ascending_north": {
+      "model": "nederlod:block/item_conveyor_ascending"
+    },
+    "shape=ascending_east": {
+      "model": "nederlod:block/item_conveyor_ascending",
+      "y": 90
+    },
+    "shape=ascending_south": {
+      "model": "nederlod:block/item_conveyor_ascending",
+      "y": 180
+    },
+    "shape=ascending_west": {
+      "model": "nederlod:block/item_conveyor_ascending",
+      "y": 270
+    }
+  }
+}

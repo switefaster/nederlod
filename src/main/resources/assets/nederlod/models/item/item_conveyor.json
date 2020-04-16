@@ -1,0 +1,23 @@
+{
+  "parent": "nederlod:block/item_conveyor_straight",
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, 2, 0],
+      "scale": [0.6, 0.6, 0.6]
+    },
+    "thirdperson_lefthand": {
+      "translation": [0, 2, 0],
+      "scale": [0.6, 0.6, 0.6]
+    },
+    "ground": {
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "head": {
+      "translation": [0, 14, 0]
+    },
+    "fixed": {
+      "rotation": [-90, 0, 0],
+      "translation": [0, 0, -8.25]
+    }
+  }
+}
